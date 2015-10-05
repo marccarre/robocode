@@ -44,3 +44,6 @@ include/
 
 ## Python/coverage:
 .coverage
+
+## Robocode:
+config/
