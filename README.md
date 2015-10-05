@@ -30,3 +30,24 @@
             - `VM options`: `-Xmx512M -Dsun.io.useCanonCaches=false -Ddebug=true`
             - `Working directory`: `/path/to/robocode` (from previous step)
             - `Use classpath of module`: `robocode-marcobot`
+
+## Resources
+
+- [http://robocode.sourceforge.net/docs/robocode/](http://robocode.sourceforge.net/docs/robocode/)
+- [http://mark.random-article.com/weber/java/robocode/lesson2.html](http://mark.random-article.com/weber/java/robocode/lesson2.html)
+- [http://mark.random-article.com/weber/java/robocode/lesson3.html](http://mark.random-article.com/weber/java/robocode/lesson3.html)
+- [http://mark.random-article.com/weber/java/robocode/lesson4.html](http://mark.random-article.com/weber/java/robocode/lesson4.html)
+- [http://mark.random-article.com/weber/java/robocode/lesson5.html](http://mark.random-article.com/weber/java/robocode/lesson5.html)
+- [http://robowiki.net/wiki/Talk:Wall_Avoidance](http://robowiki.net/wiki/Talk:Wall_Avoidance)
+- [http://robowiki.net/wiki/Wall_Smoothing](http://robowiki.net/wiki/Wall_Smoothing)
+- [http://robowiki.net/wiki/Wall_Smoothing/Implementations](http://robowiki.net/wiki/Wall_Smoothing/Implementations)
+- [http://www.ibm.com/developerworks/library/j-robotips/index.html](http://www.ibm.com/developerworks/library/j-robotips/index.html)
+  - [Anti-gravity movement](http://www.ibm.com/developerworks/library/j-antigrav/index.html)
+  - [Predictive targeting](http://www.ibm.com/developerworks/library/j-pred-targeting/index.html)
+  - [Tracking your opponents' movement](http://www.ibm.com/developerworks/java/library/j-movement/index.html)
+  - [Circular targeting](http://www.ibm.com/developerworks/library/j-circular/index.html)
+  - [Dodge bullets](http://www.ibm.com/developerworks/library/j-dodge/index.html)
+  - [Tracking bullets](http://www.ibm.com/developerworks/library/j-tipbullet.html)
+  - [Radar sweeps](http://www.ibm.com/developerworks/library/j-radar/index.html)
+  - [Polymorphic enemy cache](http://www.ibm.com/developerworks/library/j-tippoly/)
+  - [Robocode strategies](http://www.ibm.com/developerworks/library/j-tipstrats/index.html)
