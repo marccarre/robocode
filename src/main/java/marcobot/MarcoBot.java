@@ -1,84 +1,85 @@
 package marcobot;
 
-import marcobot.enemies.EnemyEvent;
+import marcobot.enemies.EnemyBot;
 import robocode.AdvancedRobot;
-import robocode.Condition;
-import robocode.CustomEvent;
+import robocode.HitRobotEvent;
+import robocode.RobotDeathEvent;
+import robocode.Rules;
 import robocode.ScannedRobotEvent;
-
-import java.util.Random;
+import robocode.WinEvent;
 
 public class MarcoBot extends AdvancedRobot {
 
-    private static final Random RANDOM = new Random();
-    private static final String ON_WALL_TOO_CLOSE = "onWallTooClose";
-    private static final double WALL_MARGIN = 50;
-
-    private int moveDirection = 1;
-
-    public void run() {
-        // Initialization:
-        setAdjustRadarForRobotTurn(true); // Independent radar movement.
-        addWallTooClose(WALL_MARGIN);
-
-        // Infinite loop:
-        while (true) {
-            turnRadarLeft(360);
-            randomMove();
-        }
-    }
-
-    private void addWallTooClose(final double margin) {
-        addCustomEvent(new Condition(ON_WALL_TOO_CLOSE) {
-            public boolean test() {
-                return reachedLeftWall(margin) || reachedRightWall(margin) || reachedBottomWall(margin) || reachedTopWall(margin);
-            }
-        });
-    }
-
-    private boolean reachedTopWall(final double wallMargin) {
-        return getY() >= getBattleFieldHeight() - wallMargin;
-    }
-
-    private boolean reachedBottomWall(final double wallMargin) {
-        return getY() <= wallMargin;
-    }
-
-    private boolean reachedRightWall(final double wallMargin) {
-        return getX() >= getBattleFieldWidth() - wallMargin;
-    }
-
-    private boolean reachedLeftWall(final double wallMargin) {
-        return getX() <= wallMargin;
-    }
-
-    private void randomMove() {
-        turn(Direction.randomize(RANDOM));
-        moveDirection *= RANDOM.nextBoolean() ? 1 : -1;
-        setAhead(moveDirection * (500 + RANDOM.nextInt()));
-    }
-
-    private void turn(final Direction direction) {
-        switch (direction) {
-            case LEFT:
-                turnLeft(RANDOM.nextInt(180));
-                break;
-            case RIGHT:
-                turnRight(RANDOM.nextInt(180));
-                break;
-        }
-    }
-
-    public void onCustomEvent(CustomEvent e) {
-        if (ON_WALL_TOO_CLOSE.equals(e.getCondition().getName())) {
-            // switch directions and move away
-            moveDirection *= -1;
-            setAhead(moveDirection * (500 + RANDOM.nextInt()));
-        }
-    }
+    private EnemyBot trackedEnemy = new EnemyBot();
 
     public void onScannedRobot(final ScannedRobotEvent e) {
-        setTurnGunRight(getHeading() - getGunHeading() + e.getBearing());
-        fire(1);
+        if (trackedEnemy.shouldTrack(e)) {
+            trackedEnemy.track(e);
+            setTurnRight(e.getBearing()); // Turn towards tracked robot.
+        }
+    }
+
+    public void onRobotHit(final HitRobotEvent e) {
+        if (e.isMyFault()) {
+
+        }
+    }
+
+    public void onRobotDeath(final RobotDeathEvent e) {
+        if (trackedEnemy.is(e.getName())) {
+            trackedEnemy.reset();
+        }
+    }
+
+    public void onWin(final WinEvent e) {
+        dance();
+    }
+
+    public void run() {
+        setAdjustRadarForGunTurn(true); // Independent radar movement.
+
+        trackedEnemy.reset();
+        while (true) {
+            rotateRadar();
+            move();
+            fire();
+            execute(); // Execute queued-up actions.
+        }
+    }
+
+    private void rotateRadar() {
+        setTurnRadarRight(360);
+    }
+
+    private void move() {
+        // Move a little closer...
+        if (trackedEnemy.distance() > 200)
+            setAhead(trackedEnemy.distance() / 2);
+        // ...but not too close.
+        if (trackedEnemy.distance() < 100)
+            setBack(trackedEnemy.distance());
+    }
+
+    private void fire() {
+        if (trackedEnemy.none() || getGunHeat() > 0)
+            return;
+
+        // Only shoot if we're (close to) pointing at our enemy
+        if (Math.abs(getTurnRemaining()) < 10) {
+            double max = Math.max(getBattleFieldHeight(), getBattleFieldWidth());
+            if (trackedEnemy.distance() < max / 3) {
+                setFire(Rules.MAX_BULLET_POWER);
+            } else {
+                setFire(Rules.MIN_BULLET_POWER);
+            }
+        }
+    }
+
+    private void dance() {
+        turnRight(360);
+        for (int i = 0; i < 3; ++i) {
+            ahead(10);
+            back(10);
+        }
     }
 }
