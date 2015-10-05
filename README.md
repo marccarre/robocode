@@ -1,4 +1,4 @@
-# Robocode - MarcoBot
+# Robocode
 
 ## Setup
 

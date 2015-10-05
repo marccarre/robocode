@@ -3,11 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.carmatechnologies.robocode</groupId>
-    <artifactId>robocode-marcobot</artifactId>
+    <artifactId>robocode</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
-    <name>robocode</name>
+    <name>${project.artifactId}</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
