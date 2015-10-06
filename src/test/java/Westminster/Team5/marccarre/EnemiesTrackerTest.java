@@ -16,7 +16,7 @@ public class EnemiesTrackerTest {
         assertThat(tracker.size(), is(0));
         assertThat(tracker.latest(), is(nullValue()));
 
-        tracker.update(new ScannedRobotEvent("Robot#1", 1.0, 2.0, 3.0, 4.0, 5.0));
+        tracker.log(new ScannedRobotEvent("Robot#1", 1.0, 2.0, 3.0, 4.0, 5.0));
         assertThat(tracker.size(), is(1));
         assertThat(tracker.latest(), is(not(nullValue())));
         assertThat(tracker.latest(), is(new State(0L, "Robot#1", 1.0, 114.59155902616465, 3.0, 229.1831180523293, 5.0)));
@@ -29,13 +29,13 @@ public class EnemiesTrackerTest {
         EnemiesTracker tracker = new EnemiesTracker(stateHistoryMaxSize);
         assertThat(tracker.size(), is(0));
 
-        tracker.update(new ScannedRobotEvent("Robot#1", 1.0, 2.0, 3.0, 4.0, 5.0));
-        tracker.update(new ScannedRobotEvent("Robot#1", 2.0, 3.0, 4.0, 5.0, 6.0));
-        tracker.update(new ScannedRobotEvent("Robot#1", 3.0, 4.0, 5.0, 6.0, 7.0));
+        tracker.log(new ScannedRobotEvent("Robot#1", 1.0, 2.0, 3.0, 4.0, 5.0));
+        tracker.log(new ScannedRobotEvent("Robot#1", 2.0, 3.0, 4.0, 5.0, 6.0));
+        tracker.log(new ScannedRobotEvent("Robot#1", 3.0, 4.0, 5.0, 6.0, 7.0));
         assertThat(tracker.size(), is(stateHistoryMaxSize));
         assertThat(tracker.latest(), is(new State(0L, "Robot#1", 3.0, 229.1831180523293, 5.0, 343.77467707849394, 7.0)));
 
-        tracker.update(new ScannedRobotEvent("Robot#1", 4.0, 5.0, 6.0, 7.0, 8.0));
+        tracker.log(new ScannedRobotEvent("Robot#1", 4.0, 5.0, 6.0, 7.0, 8.0));
         assertThat(tracker.size(), is(stateHistoryMaxSize)); // First event has been evicted.
         assertThat(tracker.latest(), is(new State(0L, "Robot#1", 4.0, 286.4788975654116, 6.0, 401.07045659157626, 8.0)));
     }

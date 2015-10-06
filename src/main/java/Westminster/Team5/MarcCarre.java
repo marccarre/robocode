@@ -15,7 +15,7 @@ public class MarcCarre extends AdvancedRobot {
     private State targettedEnemy;
 
     public void onScannedRobot(final ScannedRobotEvent e) {
-        final State state = enemiesTracker.update(e);
+        final State state = enemiesTracker.log(e);
         if ((targettedEnemy == null) || (targettedEnemy.name().equals(e.getName())) || (state.equals(enemiesTracker.closest()))) {
             targettedEnemy = state;
             setTurnRight(targettedEnemy.bearing()); // Turn towards tracked robot.
