@@ -51,14 +51,28 @@ public class State {
 		return velocity;
 	}
 
+	@Override
 	public boolean equals(final Object object) {
-		if (object == this)
+		if (object == this) {
 			return true;
-		if (object == null)
+		}
+		if (object == null) {
 			return false;
-		if (!(object instanceof State))
+		}
+		if (!(object instanceof State)) {
 			return false;
+		}
 		final State that = (State) object;
-		return (this.energy == that.energy) && (this.bearing == that.bearing) && (this.distance == that.distance) && (this.heading == that.heading) && (this.velocity == that.velocity);
+		return (this.energy == that.energy) &&
+				(this.bearing == that.bearing) &&
+				(this.distance == that.distance) &&
+				(this.heading == that.heading) &&
+				(this.velocity == that.velocity);
 	}
+
+	@Override
+	public String toString() {
+		return "State{energy:" + energy + ", bearing:" + bearing + ", distance: " + distance + ", heading:" + heading + ", velocity:" + velocity + "}";
+	}
+	
 }
