@@ -6,6 +6,7 @@ import Westminster.Team5.marccarre.State;
 import robocode.AdvancedRobot;
 import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
+import robocode.HitWallEvent;
 import robocode.RobotDeathEvent;
 import robocode.Rules;
 import robocode.ScannedRobotEvent;
@@ -31,14 +32,17 @@ public class MarcCarre extends AdvancedRobot {
         dodger.dodgeIfHasFired();
     }
 
+    public void onHitWall(final HitWallEvent e) {
+        setTurnRight(e.getBearing()); // Point perpendicular to the wall.
+    }
+
     public void onRobotHit(final HitRobotEvent e) {
-        if (e.isMyFault()) {
-        }
+        // if (e.isMyFault()) {}
     }
 
     public void onHitByBullet(final HitByBulletEvent e) {
-        e.getName();
-        e.getBullet();
+        // e.getName();
+        // e.getBullet();
     }
 
     public void onRobotDeath(final RobotDeathEvent e) {
