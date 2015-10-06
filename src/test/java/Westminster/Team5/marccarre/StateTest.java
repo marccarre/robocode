@@ -26,6 +26,16 @@ public class StateTest {
 	}
 
 	@Test
+	public void stateShouldPrintNicely() {
+		final double energy = 1.0;
+		final double bearing = 2.0;
+		final double distance = 3.0;
+		final double heading = 4.0;
+		final double velocity = 5.0;
+		assertThat(new State(energy, bearing, distance, heading, velocity).toString(), is("State{energy:1.0, bearing:2.0, distance: 3.0, heading:4.0, velocity:5.0}"));
+	}
+
+	@Test
 	public void isCloserShouldSortByAscendingDistance() {
 		State x = new State(0, 0, 100, 0, 0);
 		State y = new State(0, 0, 200, 0, 0);
