@@ -7,11 +7,11 @@ import java.util.Random;
 public enum Direction {
     STRAIGHT(0), LEFT(1), RIGHT(2);
 
-    private static final Map<Integer, Direction> DIRECTIONS = new HashMap<Integer, Direction>(){{
-		put(0, STRAIGHT);
-		put(1, LEFT);
-		put(2, RIGHT);
-	}};
+    private static final Map<Integer, Direction> DIRECTIONS = new HashMap<Integer, Direction>() {{
+        put(0, STRAIGHT);
+        put(1, LEFT);
+        put(2, RIGHT);
+    }};
 
     private final int direction;
 
