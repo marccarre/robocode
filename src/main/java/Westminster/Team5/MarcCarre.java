@@ -1,6 +1,7 @@
 package Westminster.Team5;
 
-import Westminster.Team5.marccarre.EnemyBot;
+import Westminster.Team5.marccarre.EnemiesTracker;
+import Westminster.Team5.marccarre.State;
 import robocode.AdvancedRobot;
 import robocode.HitRobotEvent;
 import robocode.RobotDeathEvent;
@@ -10,76 +11,81 @@ import robocode.WinEvent;
 
 public class MarcCarre extends AdvancedRobot {
 
-    private EnemyBot trackedEnemy = new EnemyBot();
+	private final EnemiesTracker enemiesTracker = new EnemiesTracker();
+	private State targettedEnemy;
 
-    public void onScannedRobot(final ScannedRobotEvent e) {
-        if (trackedEnemy.shouldTrack(e)) {
-            trackedEnemy.track(e);
-            setTurnRight(e.getBearing()); // Turn towards tracked robot.
-        }
-    }
+	public void onScannedRobot(final ScannedRobotEvent e) {
+		final State state = enemiesTracker.update(e);
+		if ((targettedEnemy == null) || (targettedEnemy.name().equals(e.getName())) || (state.equals(enemiesTracker.closest()))) {
+			targettedEnemy = state;
+			setTurnRight(targettedEnemy.bearing()); // Turn towards tracked robot.
+		}
+	}
 
-    public void onRobotHit(final HitRobotEvent e) {
-        if (e.isMyFault()) {
+	public void onRobotHit(final HitRobotEvent e) {
+		if (e.isMyFault()) {
 
-        }
-    }
+		}
+	}
 
-    public void onRobotDeath(final RobotDeathEvent e) {
-        if (trackedEnemy.is(e.getName())) {
-            trackedEnemy.reset();
-        }
-    }
+	public void onRobotDeath(final RobotDeathEvent e) {
+		if ((targettedEnemy != null) && (targettedEnemy.name().equals(e.getName()))) {
+			targettedEnemy = null;
+		}
+	}
 
-    public void onWin(final WinEvent e) {
-        dance();
-    }
+	public void onWin(final WinEvent e) {
+		dance();
+	}
 
-    public void run() {
-        setAdjustRadarForGunTurn(true); // Independent radar movement.
+	public void run() {
+		setAdjustRadarForGunTurn(true); // Independent radar movement.
 
-        trackedEnemy.reset();
-        while (true) {
-            rotateRadar();
-            move();
-            fire();
-            execute(); // Execute queued-up actions.
-        }
-    }
+		while (true) {
+			rotateRadar();
+			move();
+			fire();
+			execute(); // Execute queued-up actions.
+		}
+	}
 
-    private void rotateRadar() {
-        setTurnRadarRight(360);
-    }
+	private void rotateRadar() {
+		setTurnRadarRight(360);
+	}
 
-    private void move() {
-        // Move a little closer...
-        if (trackedEnemy.distance() > 200)
-            setAhead(trackedEnemy.distance() / 2);
-        // ...but not too close.
-        if (trackedEnemy.distance() < 100)
-            setBack(trackedEnemy.distance());
-    }
+	private void move() {
+		if (targettedEnemy == null)
+			return;
 
-    private void fire() {
-        if (trackedEnemy.none() || getGunHeat() > 0)
-            return;
+		// Move a little closer...
+		if (targettedEnemy.distance() > 200) {
+			setAhead(targettedEnemy.distance() / 2);
+		}
+		// ...but not too close.
+		if (targettedEnemy.distance() < 100) {
+			setBack(targettedEnemy.distance());
+		}
+	}
 
-        // Only shoot if we're (close to) pointing at our enemy
-        if (Math.abs(getTurnRemaining()) < 10) {
-            double max = Math.max(getBattleFieldHeight(), getBattleFieldWidth());
-            if (trackedEnemy.distance() < max / 3) {
-                setFire(Rules.MAX_BULLET_POWER);
-            } else {
-                setFire(Rules.MIN_BULLET_POWER);
-            }
-        }
-    }
+	private void fire() {
+		if ((targettedEnemy == null) || (getGunHeat() > 0))
+			return;
 
-    private void dance() {
-        turnRight(360);
-        for (int i = 0; i < 3; ++i) {
-            ahead(10);
-            back(10);
-        }
-    }
+		// Only shoot if we're (close to) pointing at our enemy
+		if (Math.abs(getTurnRemaining()) < 10) {
+			double max = Math.max(getBattleFieldHeight(), getBattleFieldWidth());
+			if (targettedEnemy.distance() < max / 3) {
+				setFire(Rules.MAX_BULLET_POWER);
+			} else {
+				setFire(Rules.MIN_BULLET_POWER);
+			}
+		}
+	}
+
+	private void dance() {
+		for (int i = 0; i < 5; ++i) {
+			turnRight(45);
+			turnLeft(45);
+		}
+	}
 }
