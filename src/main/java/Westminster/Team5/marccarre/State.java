@@ -17,18 +17,24 @@ public class State {
 		}
 	};
 
+	private final String name;
 	private final double energy;
 	private final double bearing;
 	private final double distance;
 	private final double heading;
 	private final double velocity;
 
-	public State(final double energy, final double bearing, final double distance, final double heading, final double velocity) {
+	public State(final String name, final double energy, final double bearing, final double distance, final double heading, final double velocity) {
+		this.name = name;
 		this.energy = energy;
 		this.bearing = bearing;
 		this.distance = distance;
 		this.heading = heading;
 		this.velocity = velocity;
+	}
+
+	public String name() {
+		return name;
 	}
 
 	public double energy() {
@@ -63,7 +69,8 @@ public class State {
 			return false;
 		}
 		final State that = (State) object;
-		return (this.energy == that.energy) &&
+		return (this.name.equals(that.name)) &&
+				(this.energy == that.energy) &&
 				(this.bearing == that.bearing) &&
 				(this.distance == that.distance) &&
 				(this.heading == that.heading) &&
@@ -72,7 +79,7 @@ public class State {
 
 	@Override
 	public String toString() {
-		return "State{energy:" + energy + ", bearing:" + bearing + ", distance: " + distance + ", heading:" + heading + ", velocity:" + velocity + "}";
+		return "State{name:" + name + ", energy:" + energy + ", bearing:" + bearing + ", distance: " + distance + ", heading:" + heading + ", velocity:"
+				+ velocity + "}";
 	}
-	
 }
