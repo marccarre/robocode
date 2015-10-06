@@ -17,18 +17,22 @@ public class State {
 		}
 	};
 
+	private final double energy;
 	private final double bearing;
 	private final double distance;
-	private final double energy;
 	private final double heading;
 	private final double velocity;
 
-	public State(final double bearing, final double distance, final double energy,final  double heading, final double velocity) {
+	public State(final double energy, final double bearing, final double distance, final double heading, final double velocity) {
+		this.energy = energy;
 		this.bearing = bearing;
 		this.distance = distance;
-		this.energy = energy;
 		this.heading = heading;
 		this.velocity = velocity;
+	}
+
+	public double energy() {
+		return energy;
 	}
 
 	public double bearing() {
@@ -39,15 +43,22 @@ public class State {
 		return distance;
 	}
 
-	public double energy() {
-		return energy;
-	}
-
 	public double heading() {
 		return heading;
 	}
 
 	public double velocity() {
 		return velocity;
+	}
+
+	public boolean equals(final Object object) {
+		if (object == this)
+			return true;
+		if (object == null)
+			return false;
+		if (!(object instanceof State))
+			return false;
+		final State that = (State) object;
+		return (this.energy == that.energy) && (this.bearing == that.bearing) && (this.distance == that.distance) && (this.heading == that.heading) && (this.velocity == that.velocity);
 	}
 }
