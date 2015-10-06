@@ -4,19 +4,18 @@ import java.util.Comparator;
 
 public class State {
     public static final Comparator<State> IS_CLOSER = new Comparator<State>() {
-        @Override
         public int compare(final State x, final State y) {
             return (int) (x.distance - y.distance);
         }
     };
 
     public static final Comparator<State> IS_WEAKER = new Comparator<State>() {
-        @Override
         public int compare(final State x, final State y) {
             return (int) (x.energy - y.energy);
         }
     };
 
+    private final long time;
     private final String name;
     private final double energy;
     private final double bearing;
@@ -24,13 +23,18 @@ public class State {
     private final double heading;
     private final double velocity;
 
-    public State(final String name, final double energy, final double bearing, final double distance, final double heading, final double velocity) {
+    public State(final long time, final String name, final double energy, final double bearing, final double distance, final double heading, final double velocity) {
+        this.time = time;
         this.name = name;
         this.energy = energy;
         this.bearing = bearing;
         this.distance = distance;
         this.heading = heading;
         this.velocity = velocity;
+    }
+
+    public long time() {
+        return time;
     }
 
     public String name() {
@@ -69,7 +73,8 @@ public class State {
             return false;
         }
         final State that = (State) object;
-        return (this.name.equals(that.name)) &&
+        return (this.time == that.time) &&
+                (this.name.equals(that.name)) &&
                 (this.energy == that.energy) &&
                 (this.bearing == that.bearing) &&
                 (this.distance == that.distance) &&
@@ -79,7 +84,7 @@ public class State {
 
     @Override
     public String toString() {
-        return "State{name:" + name + ", energy:" + energy + ", bearing:" + bearing + ", distance: " + distance + ", heading:" + heading + ", velocity:"
+        return "State{time:"+ time +", name:" + name + ", energy:" + energy + ", bearing:" + bearing + ", distance: " + distance + ", heading:" + heading + ", velocity:"
                 + velocity + "}";
     }
 }

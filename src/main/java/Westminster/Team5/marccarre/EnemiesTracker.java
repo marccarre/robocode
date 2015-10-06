@@ -30,7 +30,7 @@ public class EnemiesTracker {
     public State update(final ScannedRobotEvent e) {
         final Deque<State> states = getOrCreateStatesFor(e.getName());
 
-        final State state = new State(e.getName(), e.getEnergy(), e.getBearing(), e.getDistance(), e.getHeading(), e.getVelocity());
+        final State state = new State(e.getTime(), e.getName(), e.getEnergy(), e.getBearing(), e.getDistance(), e.getHeading(), e.getVelocity());
         states.addLast(state);
         statesByDistance.add(state);
         latestState = state;
