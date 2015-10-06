@@ -1,8 +1,10 @@
 package Westminster.Team5;
 
-import Westminster.Team5.marccarre.EnemiesTracker;
+import Westminster.Team5.marccarre.capabilities.Dodger;
+import Westminster.Team5.marccarre.capabilities.EnemiesTracker;
 import Westminster.Team5.marccarre.State;
 import robocode.AdvancedRobot;
+import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
 import robocode.RobotDeathEvent;
 import robocode.Rules;
@@ -11,21 +13,32 @@ import robocode.WinEvent;
 
 public class MarcCarre extends AdvancedRobot {
 
+    private static final int MOVE_CLOSER_TO_ENEMY = 30; // 0 = neutral, + = move closer, - = move away.
+
     private final EnemiesTracker enemiesTracker = new EnemiesTracker();
+    private final Dodger dodger = new Dodger(this, enemiesTracker);
+
     private State targettedEnemy;
 
     public void onScannedRobot(final ScannedRobotEvent e) {
         final State state = enemiesTracker.log(e);
         if ((targettedEnemy == null) || (targettedEnemy.name().equals(e.getName())) || (state.equals(enemiesTracker.closest()))) {
             targettedEnemy = state;
-            setTurnRight(targettedEnemy.bearing()); // Turn towards tracked robot.
+
+            setTurnRight(targettedEnemy.bearing() + 90 - MOVE_CLOSER_TO_ENEMY);
         }
+
+        dodger.dodgeIfHasFired();
     }
 
     public void onRobotHit(final HitRobotEvent e) {
         if (e.isMyFault()) {
-
         }
+    }
+
+    public void onHitByBullet(final HitByBulletEvent e) {
+        e.getName();
+        e.getBullet();
     }
 
     public void onRobotDeath(final RobotDeathEvent e) {
@@ -40,6 +53,7 @@ public class MarcCarre extends AdvancedRobot {
 
     public void run() {
         setAdjustRadarForGunTurn(true); // Independent radar movement.
+        turnGunLeft(90 - MOVE_CLOSER_TO_ENEMY); // Set gun at 90° to better dodge.
 
         while (true) {
             rotateRadar();

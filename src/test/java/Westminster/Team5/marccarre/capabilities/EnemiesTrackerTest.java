@@ -1,5 +1,7 @@
-package Westminster.Team5.marccarre;
+package Westminster.Team5.marccarre.capabilities;
 
+import Westminster.Team5.marccarre.State;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import robocode.ScannedRobotEvent;
 
@@ -19,7 +21,7 @@ public class EnemiesTrackerTest {
         tracker.log(new ScannedRobotEvent("Robot#1", 1.0, 2.0, 3.0, 4.0, 5.0));
         assertThat(tracker.size(), is(1));
         assertThat(tracker.latest(), is(not(nullValue())));
-        assertThat(tracker.latest(), is(new State(0L, "Robot#1", 1.0, 114.59155902616465, 3.0, 229.1831180523293, 5.0)));
+        assertThat(tracker.latest(), CoreMatchers.is(new State(0L, "Robot#1", 1.0, 114.59155902616465, 3.0, 229.1831180523293, 5.0)));
     }
 
     @Test

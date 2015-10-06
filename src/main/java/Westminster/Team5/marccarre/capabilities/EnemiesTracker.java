@@ -1,5 +1,6 @@
-package Westminster.Team5.marccarre;
+package Westminster.Team5.marccarre.capabilities;
 
+import Westminster.Team5.marccarre.State;
 import robocode.ScannedRobotEvent;
 
 import java.util.Deque;
@@ -14,7 +15,7 @@ public class EnemiesTracker {
     private static final int DEFAULT_STATE_HISTORY_MAX_SIZE = 100;
 
     private final int stateHistoryMaxSize;
-    private final Map<String, Deque<State>> gameState = new HashMap<String, Deque<State>>();
+    private final Map<String, LinkedList<State>> gameState = new HashMap<String, LinkedList<State>>();
     private final SortedSet<State> statesByDistance = new TreeSet<State>(State.IS_CLOSER);
 
     private State latestState;
@@ -39,8 +40,8 @@ public class EnemiesTracker {
         return state;
     }
 
-    private Deque<State> getOrCreateStatesFor(final String name) {
-        Deque<State> states = gameState.get(name);
+    private LinkedList<State> getOrCreateStatesFor(final String name) {
+        LinkedList<State> states = gameState.get(name);
         if (states == null) {
             states = new LinkedList<State>();
             gameState.put(name, states);
@@ -70,5 +71,13 @@ public class EnemiesTracker {
 
     public State closest() {
         return statesByDistance.first();
+    }
+
+    public LinkedList<State> statesFor(final String name) {
+        return getOrCreateStatesFor(name);
+    }
+
+    public LinkedList<State> statesForLatest() {
+        return getOrCreateStatesFor(latest().name());
     }
 }
