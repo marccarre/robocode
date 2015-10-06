@@ -1,6 +1,6 @@
-package marcobot;
+package Westminster.Team5;
 
-import marcobot.enemies.EnemyBot;
+import Westminster.Team5.marccarre.EnemyBot;
 import robocode.AdvancedRobot;
 import robocode.HitRobotEvent;
 import robocode.RobotDeathEvent;
@@ -8,7 +8,7 @@ import robocode.Rules;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
 
-public class MarcoBot extends AdvancedRobot {
+public class MarcCarre extends AdvancedRobot {
 
     private EnemyBot trackedEnemy = new EnemyBot();
 
