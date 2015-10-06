@@ -1,18 +1,17 @@
 package Westminster.Team5.marccarre;
 
-import com.google.common.collect.ImmutableMap;
-
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 public enum Direction {
     STRAIGHT(0), LEFT(1), RIGHT(2);
 
-    private static final Map<Integer, Direction> DIRECTIONS = ImmutableMap.of(
-            0, STRAIGHT,
-            1, LEFT,
-            2, RIGHT
-    );
+    private static final Map<Integer, Direction> DIRECTIONS = new HashMap<Integer, Direction>(){{
+		put(0, STRAIGHT);
+		put(1, LEFT);
+		put(2, RIGHT);
+	}};
 
     private final int direction;
 
