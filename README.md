@@ -29,7 +29,12 @@
             - `Main class`: `robocode.Robocode`
             - `VM options`: `-Xmx512M -Dsun.io.useCanonCaches=false -Ddebug=true`
             - `Working directory`: `/path/to/robocode` (from previous step)
-            - `Use classpath of module`: `robocode-marcobot`
+            - `Use classpath of module`: `robocode`
+
+    - In Robocode, go to `Preferences` > `Development Options`
+
+         - `Add` > `/path/to/project/robocode/target/classes`
+         - `Add` > `/path/to/robocode/robots`
 
 ## Resources
 
