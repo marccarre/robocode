@@ -6,6 +6,8 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class EnemiesTracker {
 
@@ -13,8 +15,9 @@ public class EnemiesTracker {
 
 	private final int stateHistoryMaxSize;
 	private final Map<String, Deque<State>> gameState = new HashMap<String, Deque<State>>();
+	private final SortedSet<State> statesByDistance = new TreeSet<State>(State.IS_CLOSER);
 
-	private State lastState;
+	private State latestState;
 
 	public EnemiesTracker() {
 		this(DEFAULT_STATE_HISTORY_MAX_SIZE);
@@ -24,12 +27,16 @@ public class EnemiesTracker {
 		this.stateHistoryMaxSize = stateHistoryMaxSize;
 	}
 
-	public void update(final ScannedRobotEvent e) {
+	public State update(final ScannedRobotEvent e) {
 		final Deque<State> states = getOrCreateStatesFor(e.getName());
-		final State state = new State(e.getEnergy(), e.getBearing(), e.getDistance(), e.getHeading(), e.getVelocity());
+
+		final State state = new State(e.getName(), e.getEnergy(), e.getBearing(), e.getDistance(), e.getHeading(), e.getVelocity());
 		states.addLast(state);
-		lastState = state;
+		statesByDistance.add(state);
+		latestState = state;
+
 		evictOldStates(states);
+		return state;
 	}
 
 	private Deque<State> getOrCreateStatesFor(final String name) {
@@ -45,6 +52,9 @@ public class EnemiesTracker {
 		while (states.size() > stateHistoryMaxSize) {
 			states.removeFirst();
 		}
+		while(statesByDistance.size() > stateHistoryMaxSize) {
+			statesByDistance.remove(statesByDistance.last());
+		}
 	}
 
 	public int size() {
@@ -54,8 +64,11 @@ public class EnemiesTracker {
 		return size;
 	}
 
-	public State lastState() {
-		return lastState;
+	public State latest() {
+		return latestState;
 	}
 
+	public State closest() {
+		return statesByDistance.first();
+	}
 }
