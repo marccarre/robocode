@@ -33,7 +33,8 @@ public class MarcCarre extends AdvancedRobot {
     }
 
     public void onHitWall(final HitWallEvent e) {
-        setTurnRight(e.getBearing()); // Point perpendicular to the wall.
+		setBack(200); // Move back and...
+        setTurnRight(e.getBearing() + 90); // ...point perpendicular to the wall.
     }
 
     public void onRobotHit(final HitRobotEvent e) {
