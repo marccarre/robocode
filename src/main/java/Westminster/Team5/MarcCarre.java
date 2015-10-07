@@ -104,4 +104,12 @@ public class MarcCarre extends AdvancedRobot {
         }
         execute();
     }
+    
+    private void turnRadarTowardsTarget(final ScannedRobotEvent e) {
+        setTurnRadarRight(getHeading() - getRadarHeading() + e.getBearing());
+    }
+
+    private void turnGunTowardsTarget(final ScannedRobotEvent e) {
+        setTurnGunRight(getHeading() - getGunHeading() + e.getBearing());
+    }
 }
