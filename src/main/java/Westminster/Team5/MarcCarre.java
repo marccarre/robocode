@@ -63,7 +63,7 @@ public class MarcCarre extends AdvancedRobot {
     }
 
     public void run() {
-        setColors(Color.BLACK, Color.CYAN, Color.BLACK, Color.YELLOW, Color.CYAN);
+        setColors(Color.BLACK, Color.CYAN, Color.BLACK, Color.CYAN, Color.CYAN);
 
         // Independent radar movement:
         setAdjustRadarForGunTurn(true);
