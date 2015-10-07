@@ -3,9 +3,11 @@ package Westminster.Team5;
 import Westminster.Team5.marccarre.State;
 import Westminster.Team5.marccarre.capabilities.Dodger;
 import Westminster.Team5.marccarre.capabilities.EnemiesTracker;
+import Westminster.Team5.marccarre.capabilities.events.OnWallTooClose;
 import Westminster.Team5.marccarre.capabilities.radar.ContinuousRadar;
 import Westminster.Team5.marccarre.capabilities.radar.Radar;
 import robocode.AdvancedRobot;
+import robocode.CustomEvent;
 import robocode.HitWallEvent;
 import robocode.RobotDeathEvent;
 import robocode.Rules;
@@ -36,7 +38,9 @@ public class MarcCarre extends AdvancedRobot {
     }
 
     public void onHitWall(final HitWallEvent e) {
-        back(100);
+        setBack(100);
+        setTurnRight(e.getBearing() + 90);
+        execute();
     }
 
     public void onRobotDeath(final RobotDeathEvent e) {
@@ -49,8 +53,15 @@ public class MarcCarre extends AdvancedRobot {
         dance();
     }
 
+    public void onCustomEvent(final CustomEvent e) {
+        if (e.getCondition().getName().equals(OnWallTooClose.EVENT_NAME)) {
+            setBack(100);
+        }
+    }
+
     public void run() {
         setColors(Color.BLACK, Color.BLACK, Color.BLACK, Color.YELLOW, Color.CYAN);
+        addCustomEvent(new OnWallTooClose(this, 60));
 
         // Independent radar movement:
         setAdjustRadarForGunTurn(true);
