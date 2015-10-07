@@ -3,9 +3,9 @@ package Westminster.Team5;
 import Westminster.Team5.marccarre.capabilities.Dodger;
 import Westminster.Team5.marccarre.capabilities.EnemiesTracker;
 import Westminster.Team5.marccarre.State;
+import Westminster.Team5.marccarre.capabilities.radar.ContinuousRadar;
+import Westminster.Team5.marccarre.capabilities.radar.Radar;
 import robocode.AdvancedRobot;
-import robocode.HitByBulletEvent;
-import robocode.HitRobotEvent;
 import robocode.HitWallEvent;
 import robocode.RobotDeathEvent;
 import robocode.Rules;
@@ -18,6 +18,7 @@ public class MarcCarre extends AdvancedRobot {
 
     private final EnemiesTracker enemiesTracker = new EnemiesTracker();
     private final Dodger dodger = new Dodger(this, enemiesTracker);
+    private final Radar radar = new ContinuousRadar(this);
 
     private State targettedEnemy;
 
@@ -54,15 +55,11 @@ public class MarcCarre extends AdvancedRobot {
         turnGunLeft(90 - MOVE_CLOSER_TO_ENEMY); // Set gun at 90° to better dodge.
 
         while (true) {
-            rotateRadar();
+            radar.scan();
             move();
             fire();
             execute(); // Execute queued-up actions.
         }
-    }
-
-    private void rotateRadar() {
-        setTurnRadarRight(360);
     }
 
     private void move() {
@@ -95,16 +92,16 @@ public class MarcCarre extends AdvancedRobot {
     }
 
     private void dance() {
-		final int angle = 30;
+        final int angle = 30;
         for (int i = 0; i < 5; ++i) {
-			setTurnLeft(angle);
+            setTurnLeft(angle);
             setTurnGunRight(angle);
-			setTurnRadarLeft(angle);
+            setTurnRadarLeft(angle);
 
-			setTurnRight(angle);
+            setTurnRight(angle);
             setTurnGunLeft(angle);
-			setTurnRadarRight(angle);
+            setTurnRadarRight(angle);
         }
-		execute();
+        execute();
     }
 }
