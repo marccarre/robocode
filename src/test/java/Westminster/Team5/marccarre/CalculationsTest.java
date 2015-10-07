@@ -29,4 +29,12 @@ public class CalculationsTest {
         assertThat(Calculations.absoluteBearing(100, 100, 0, 200), is(closeTo(315.0, TOLERANCE_ON_DOUBLES)));
         assertThat(Calculations.absoluteBearing(100, 100, 100, 100), is(closeTo(0.0, TOLERANCE_ON_DOUBLES)));
     }
+
+    @Test
+    public void normalizeBearing() {
+        assertThat(Calculations.normalizeBearing(-270), is(closeTo(90.0, TOLERANCE_ON_DOUBLES)));
+        assertThat(Calculations.normalizeBearing(270), is(closeTo(-90.0, TOLERANCE_ON_DOUBLES)));
+        assertThat(Calculations.normalizeBearing(-900), is(closeTo(-180.0, TOLERANCE_ON_DOUBLES)));
+        assertThat(Calculations.normalizeBearing(900), is(closeTo(180.0, TOLERANCE_ON_DOUBLES)));
+    }
 }
