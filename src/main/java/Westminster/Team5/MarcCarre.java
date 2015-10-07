@@ -101,9 +101,16 @@ public class MarcCarre extends AdvancedRobot {
     }
 
     private void dance() {
+		final int angle = 30;
         for (int i = 0; i < 5; ++i) {
-            turnRight(45);
-            turnLeft(45);
+			setTurnLeft(angle);
+            setTurnGunRight(angle);
+			setTurnRadarLeft(angle);
+
+			setTurnRight(angle);
+            setTurnGunLeft(angle);
+			setTurnRadarRight(angle);
         }
+		execute();
     }
 }
