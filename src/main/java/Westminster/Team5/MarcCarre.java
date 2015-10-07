@@ -1,8 +1,8 @@
 package Westminster.Team5;
 
+import Westminster.Team5.marccarre.State;
 import Westminster.Team5.marccarre.capabilities.Dodger;
 import Westminster.Team5.marccarre.capabilities.EnemiesTracker;
-import Westminster.Team5.marccarre.State;
 import Westminster.Team5.marccarre.capabilities.radar.ContinuousRadar;
 import Westminster.Team5.marccarre.capabilities.radar.Radar;
 import robocode.AdvancedRobot;
@@ -11,6 +11,8 @@ import robocode.RobotDeathEvent;
 import robocode.Rules;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
+
+import java.awt.Color;
 
 public class MarcCarre extends AdvancedRobot {
 
@@ -48,6 +50,8 @@ public class MarcCarre extends AdvancedRobot {
     }
 
     public void run() {
+        setColors(Color.BLACK, Color.BLACK, Color.BLACK, Color.YELLOW, Color.CYAN);
+
         // Independent radar movement:
         setAdjustRadarForGunTurn(true);
         setAdjustRadarForRobotTurn(true);
@@ -63,8 +67,9 @@ public class MarcCarre extends AdvancedRobot {
     }
 
     private void move() {
-        if (targettedEnemy == null)
+        if (targettedEnemy == null) {
             return;
+        }
 
         // Move a little closer...
         if (targettedEnemy.distance() > 200) {
@@ -77,18 +82,20 @@ public class MarcCarre extends AdvancedRobot {
     }
 
     private void fire() {
-        if ((targettedEnemy == null) || (getGunHeat() > 0))
+        if (!canFire()) {
             return;
-
-        // Only shoot if we're (close to) pointing at our enemy
-        if (Math.abs(getTurnRemaining()) < 10) {
-            double max = Math.max(getBattleFieldHeight(), getBattleFieldWidth());
-            if (targettedEnemy.distance() < max / 3) {
-                setFire(Rules.MAX_BULLET_POWER);
-            } else {
-                setFire(Rules.MIN_BULLET_POWER);
-            }
         }
+        if (isAlmostFacingEnemy()) {
+            setFire(Math.min(400 / targettedEnemy.distance(), Rules.MAX_BULLET_POWER));
+        }
+    }
+
+    private boolean canFire() {
+        return (targettedEnemy != null) && (getGunHeat() == 0);
+    }
+
+    private boolean isAlmostFacingEnemy() {
+        return Math.abs(getTurnRemaining()) < 10;
     }
 
     private void dance() {
@@ -104,7 +111,7 @@ public class MarcCarre extends AdvancedRobot {
         }
         execute();
     }
-    
+
     private void turnRadarTowardsTarget(final ScannedRobotEvent e) {
         setTurnRadarRight(getHeading() - getRadarHeading() + e.getBearing());
     }
