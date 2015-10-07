@@ -66,4 +66,21 @@ public class Calculations {
             throw new IllegalStateException();
         }
     }
+
+    /**
+     * Non-normalized bearings could be greater than 180 or less than -180, leading to non-efficient moves.
+     * This utility function helps to normalize them.
+     *
+     * @param angle non-normalized bearing.
+     * @return corresponding normalized bearing.
+     */
+    public static double normalizeBearing(double angle) {
+        while (angle > 180) {
+            angle -= 360;
+        }
+        while (angle < -180) {
+            angle += 360;
+        }
+        return angle;
+    }
 }
