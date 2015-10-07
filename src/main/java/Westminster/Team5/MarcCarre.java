@@ -47,7 +47,10 @@ public class MarcCarre extends AdvancedRobot {
     }
 
     public void run() {
-        setAdjustRadarForGunTurn(true); // Independent radar movement.
+		// Independent radar movement:
+        setAdjustRadarForGunTurn(true);
+		setAdjustRadarForRobotTurn(true);
+
         turnGunLeft(90 - MOVE_CLOSER_TO_ENEMY); // Set gun at 90° to better dodge.
 
         while (true) {
